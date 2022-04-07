@@ -49,6 +49,7 @@
           <input v-model="currentContact.phone_number" type="text" />
         </p>
         <button v-on:click="updateContact(currentContact)">Update</button>
+        <button v-on:click="deleteContact(currentContact)">Delete</button>
         <button>Close</button>
       </form>
     </dialog>
@@ -90,12 +91,19 @@ export default {
       this.currentContact = contact;
       document.querySelector("#contact-details").showModal();
     },
-  },
-  updateContacts(contact) {
-    axios.patch("/contact" + contact.id, this.editContact).then((response) => {
-      console.log(response.data);
-      this.currentContact = {};
-    });
+    updateContacts(contact) {
+      axios.patch("/contacts" + contact.id, this.editContact).then((response) => {
+        console.log(response.data);
+        this.currentContact = {};
+      });
+    },
+    deleteContact(contact) {
+      axios.delete(`/contacts/${contact.id}`).then((response) => {
+        console.log(response);
+        var index = this.contacts.indexOf(contact);
+        this.contacts.splice(index, 1);
+      });
+    },
   },
 };
 </script>
