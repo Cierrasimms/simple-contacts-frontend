@@ -31,6 +31,24 @@
         <p>Last name: {{ currentContact.last_name }}</p>
         <p>Email: {{ currentContact.email }}</p>
         <p>Phone number: {{ currentContact.phone_number }}</p>
+        <h1>Edit Product</h1>
+        <p>
+          First name
+          <input v-model="currentContact.first_name" type="text" />
+        </p>
+        <p>
+          Last name:
+          <input v-model="currentContact.last_name" type="text" />
+        </p>
+        <p>
+          Email
+          <input v-model="currentContact.email" type="text" />
+        </p>
+        <p>
+          Phone number
+          <input v-model="currentContact.phone_number" type="text" />
+        </p>
+        <button v-on:click="updateContact(currentContact)">Update</button>
         <button>Close</button>
       </form>
     </dialog>
@@ -47,6 +65,7 @@ export default {
       contacts: [],
       newContact: {},
       currentContact: {},
+      editContact: {},
     };
   },
   created: function () {
@@ -71,6 +90,12 @@ export default {
       this.currentContact = contact;
       document.querySelector("#contact-details").showModal();
     },
+  },
+  updateContacts(contact) {
+    axios.patch("/contact" + contact.id, this.editContact).then((response) => {
+      console.log(response.data);
+      this.currentContact = {};
+    });
   },
 };
 </script>
